@@ -9,10 +9,10 @@ export class MediaImage extends DDD {
 
   constructor() {
     super();
-    this.source = "https://github.com/pennstate.png";
-    this.caption = "PSU"
-    this.description = "Wonderful image of the Penn State logo :D"
-    this.altText = "PSU Logo";
+    this.source = "https://assets-global.website-files.com/648b07b602810d848d5617a5/64a5856733c97c2d2457e7ad_6234f0e17e979159359bd9e6_Designership-Shipfaster-UI-Design-System-4%2520(1).png";
+    this.caption = "Figma"
+    this.description = "Some random stuff on figma.com"
+    this.altText = "Screenshot of figma";
     this.primary = "green";
     this.secondary = "black";
   }
@@ -36,8 +36,8 @@ export class MediaImage extends DDD {
         align-items: center;
         border: .15rem solid var(--border-color, var(--ddd-theme-default-coalyGray));
         border-radius: 8px;
-        width: var(--width, 400px);
-        height: var(--height, 400px);
+        width: var(--width, 650px);
+        height: var(--height, 350px);
         padding: 1%;
         background-color: var(--background-color);
       }
@@ -48,23 +48,18 @@ export class MediaImage extends DDD {
         transition: .5s;
       }
 
-      .foreground {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 90%;
-        height: 90%;
+      img {
+        width: var(--image-width, 80%);
+        height: var(--image-height, 85%);
         border: .15rem solid var(--border-color, var(--ddd-theme-default-coalyGray));
         border-radius: 8px;
-        background-color: var(--foreground-color, white);
-      }
-
-      .foreground img {
-        width: var(--image-width, 85%);
-        /* height: var(--image-height, 90%); */
       }
 
       .caption {
+        height: 13%;
+        padding: 2% 0;
+        margin: 0;
+        font-size: 25px;
         color: var(--caption-color, var(--ddd-theme-default-slateMaxLight))
       }
 
@@ -74,9 +69,7 @@ export class MediaImage extends DDD {
   render() {
     return html`
         <div class="background">
-            <div class="foreground">
-                <image src="${this.source}" alt="${this.altText}"></image>
-            </div>
+            <image src="${this.source}" alt="${this.altText}"></image>
             <p class="caption">${this.caption}</p>
         </div>
     `;
