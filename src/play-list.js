@@ -11,6 +11,17 @@ export class PlayList extends DDD {
     super();
     this.currentDescription = "default desc";
     this.mediaImages = [];
+    this.oppened = false;
+    document.body.addEventListener('toggle-play-list', this.togglePlaylist());
+  }
+
+  togglePlaylist(e) {
+    if (this.oppened == true) {
+      this.oppened = false;
+    } else {
+      this.oppened = true;
+    }
+    this.requestUpdate();
   }
 
   static get styles() {
@@ -18,16 +29,14 @@ export class PlayList extends DDD {
     return css`
 
       :host {
+      }
+
+      .background-overlay { 
         position: fixed;
         height: 100%;
         width: 100%;
         top: 0px;
         left: 0px;
-      }
-
-      .background-overlay {
-        height: 100%;
-        width: 100%;
         background-color: rgba(0,0,0,.5);
         display: flex;
         flex-direction: column;
@@ -49,7 +58,7 @@ export class PlayList extends DDD {
       }
 
       media-image {
-        /* pointer-events: none; */
+        pointer-events: none;
       }
 
       button {
@@ -59,6 +68,12 @@ export class PlayList extends DDD {
     `;
   }
 
+  closeOverlay() {
+    this.oppened = false;
+    this.requestUpdate();
+    // document.querySelector("play-list").remove();
+  }
+
   getDescription(e) {
     let description = e.target.description;
     
@@ -66,13 +81,13 @@ export class PlayList extends DDD {
   }
 
   render() {
-    return html`
+    return !this.oppened ? "" : html`
         <div class="background-overlay">
-            <button>CLOSE</button>
+            <button @click="${this.closeOverlay}">CLOSE</button>
             <div class="content">
                 <button>Left</button>
                 <div class="image-box">
-                    <media-image @loadstart="${this.getDescription}"></media-image>
+                    <media-image></media-image>
                     <p>${this.currentDescription}</p>
                 </div>
                 <button>Right</button>
