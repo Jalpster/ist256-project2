@@ -68,11 +68,19 @@ export class MediaImage extends DDD {
 
   openPlaylist() {
     // console.log(document.querySelector("play-list"));
-    const event = new CustomEvent('toggle-play-list', {bubbles: true, composed: true});
-    document.body.dispatchEvent(event);
+    // const event = new CustomEvent('toggle-play-list', {bubbles: true, composed: true});
+    // document.body.dispatchEvent(event);
+    document.querySelector('play-list').togglePlaylist()
+  }
+
+  addToModal() {
+    // const entry = [this.source, this.caption];
+    // document.querySelector('play-list').addImage();
+    // console.log(entry);
   }
 
   render() {
+    this.addToModal();
     return html`
         <div class="background" @click="${this.openPlaylist}">
             <image src="${this.source}" alt="${this.altText}"></image>

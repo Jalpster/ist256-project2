@@ -9,7 +9,7 @@ export class ImageDialog extends DDD {
 
   constructor() {
     super();
-    this.oppened = false;
+    this.images = [];
   }
 
   static get styles() {
@@ -23,26 +23,30 @@ export class ImageDialog extends DDD {
   }
 
   render() {
-    !this.oppened ? "" : html`
-        <div class="background-overlay">
-            <button>CLOSE</button>
-            <div class="content">
-                <button>Left</button>
-                <div class="image-box">
-                    <media-image @loadstart="${this.getDescription}"></media-image>
-                    <p>${this.currentDescription}</p>
-                </div>
-                <button>Right</button>
-            </div>
-        </div>    
+    return html`
     `;
   }
 
   static get properties() {
     return {
-        // asdasd
+        images: { type: Array, reflect: false },
     };
   }
 }
 
-globalThis.customElements.define(ImageDialog.tag, ImageDialog);
+// globalThis.customElements.define(ImageDialog.tag, ImageDialog);
+
+// register globally so we can make sure there is only one
+globalThis.ImageDialog = globalThis.ImageDialog || {};
+// request if this exists. This helps invoke the element existing in the dom
+// as well as that there is only one of them. That way we can ensure everything
+// is rendered through the same modal
+globalThis.ImageDialog.requestAvailability = () => {
+  if (!window.ImageDialog.instance) {
+    globalThis.ImageDialog.instance = document.createElement("simple-modal");
+    document.body.appendChild(globalThis.ImageDialog.instance);
+  }
+  return globalThis.ImageDialog.instance;
+};
+
+export const ImageDialogStore = globalThis.ImageDialog.requestAvailability();

@@ -10,18 +10,27 @@ export class PlayList extends DDD {
   constructor() {
     super();
     this.currentDescription = "default desc";
-    this.mediaImages = [];
+    this.mediaImages;
     this.oppened = false;
-    document.body.addEventListener('toggle-play-list', this.togglePlaylist());
+    this.addImage();
+    // document.body.addEventListener('toggle-play-list', this.togglePlaylist());
   }
 
-  togglePlaylist(e) {
+  togglePlaylist() {
     if (this.oppened == true) {
       this.oppened = false;
     } else {
       this.oppened = true;
     }
     this.requestUpdate();
+  }
+
+  addImage() {
+    this.mediaImages = document.querySelectorAll('media-image');
+    // for (var i = 0, im = images.length; im > i; i++) {
+    //   this.mediaImages.appendChild(elements[i].cloneNode(true));
+    // }
+    // console.log(this.mediaImages);
   }
 
   static get styles() {
@@ -87,8 +96,8 @@ export class PlayList extends DDD {
             <div class="content">
                 <button>Left</button>
                 <div class="image-box">
-                    <media-image></media-image>
-                    <p>${this.currentDescription}</p>
+                    ${this.mediaImages[1].cloneNode(true)}
+                    <p>${this.mediaImages[1].description}</p>
                 </div>
                 <button>Right</button>
             </div>
@@ -98,9 +107,24 @@ export class PlayList extends DDD {
 
   static get properties() {
     return {
-        // asdasd
+        // mediaImages: { type: Array, reflect: true, attribute: "media-images" },
     };
   }
 }
 
 globalThis.customElements.define(PlayList.tag, PlayList);
+
+// register globally so we can make sure there is only one
+globalThis.PlayList = globalThis.PlayList || {};
+// request if this exists. This helps invoke the element existing in the dom
+// as well as that there is only one of them. That way we can ensure everything
+// is rendered through the same modal
+globalThis.PlayList.requestAvailability = () => {
+  if (!window.PlayList.instance) {
+    globalThis.PlayList.instance = document.createElement("play-list");
+    document.body.appendChild(globalThis.PlayList.instance);
+  }
+  return globalThis.PlayList.instance;
+};
+
+export const PlayListStore = globalThis.PlayList.requestAvailability();
