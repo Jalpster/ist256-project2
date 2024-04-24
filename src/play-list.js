@@ -9,28 +9,33 @@ export class PlayList extends DDD {
 
   constructor() {
     super();
-    this.currentDescription = "default desc";
     this.mediaImages;
     this.oppened = false;
-    this.addImage();
-    // document.body.addEventListener('toggle-play-list', this.togglePlaylist());
+    // this.currentImage;
+    this.currentIndex = 0;
+    document.body.addEventListener("toggle-play-list", (e) => this.togglePlaylist(e));
   }
 
-  togglePlaylist() {
+  togglePlaylist(e) {
     if (this.oppened == true) {
       this.oppened = false;
     } else {
+      this.getCurrentImage(e);
       this.oppened = true;
     }
     this.requestUpdate();
   }
 
-  addImage() {
+  getImages(e) {
     this.mediaImages = document.querySelectorAll('media-image');
-    // for (var i = 0, im = images.length; im > i; i++) {
-    //   this.mediaImages.appendChild(elements[i].cloneNode(true));
-    // }
-    // console.log(this.mediaImages);
+
+    var i = 0;
+    this.mediaImages.forEach(element => {
+      if (element == e.target) {
+        this.currentIndex = i;
+      }
+      i = i + 1;
+    });
   }
 
   static get styles() {
@@ -60,6 +65,18 @@ export class PlayList extends DDD {
         align-items: center;
       }
 
+      .close-button {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        border: none;
+        background-color: none;
+        border-radius: 90%;
+        height: 1.5rem;
+        width: 1.5rem;
+        font-size: 1rem;
+      }
+
       .image-box {
         display: flex;
         flex-direction: column;
@@ -74,32 +91,56 @@ export class PlayList extends DDD {
         height: 20px;
       }
 
+      .progress-numbers {
+        display: flex;
+        flex-direction: row;
+      }
+
     `;
   }
 
   closeOverlay() {
     this.oppened = false;
     this.requestUpdate();
-    // document.querySelector("play-list").remove();
   }
 
-  getDescription(e) {
-    let description = e.target.description;
-    
-    this.currentDescription = description;
+  getCurrentImage(e) {
+    this.getImages(e);
+    this.currentImage = this.mediaImages[this.currentIndex].cloneNode();
+  }
+
+  moveLeft() {
+    if (this.mediaImages[this.currentIndex - 1]) {
+      this.currentIndex = this.currentIndex - 1;
+      this.currentImage = this.mediaImages[this.currentIndex].cloneNode();
+      this.requestUpdate();
+    }
+  }
+
+  moveRight() {
+    if (this.mediaImages[this.currentIndex + 1]) {
+      this.currentIndex = this.currentIndex + 1;
+      this.currentImage = this.mediaImages[this.currentIndex].cloneNode();
+      this.requestUpdate();
+    }
   }
 
   render() {
     return !this.oppened ? "" : html`
         <div class="background-overlay">
-            <button @click="${this.closeOverlay}">CLOSE</button>
+            <button class="close-button" @click="${this.closeOverlay}">X</button>
             <div class="content">
-                <button>Left</button>
+                <button @click="${this.moveLeft}">Left</button>
                 <div class="image-box">
-                    ${this.mediaImages[1].cloneNode(true)}
-                    <p>${this.mediaImages[1].description}</p>
+                  <span class="progress-numbers">
+                    <p>${this.currentIndex + 1}</p>
+                    <p>&nbsp;/&nbsp;</p>
+                    <p>${this.mediaImages.length}</p>
+                  </span>
+                  ${this.currentImage}
+                  <p>${this.currentImage.description}</p>
                 </div>
-                <button>Right</button>
+                <button @click="${this.moveRight}">Right</button>
             </div>
         </div>    
     `;

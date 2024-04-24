@@ -24,6 +24,28 @@ export class MediaImage extends DDD {
       :host([primary="green"]) {
         --background-color: var(--ddd-theme-default-opportunityGreen);
       }
+      :host([primary="red"]) {
+        --background-color: var(--ddd-theme-default-original87Pink);
+      }
+      :host([primary="blue"]) {
+        --background-color: var(--ddd-theme-default-beaverBlue);
+      }
+      :host([primary="black"]) {
+        --background-color: #000;
+      }
+
+      :host([secondary="green"]) {
+        --border-color: var(--ddd-theme-default-opportunityGreen);
+      }
+      :host([secondary="red"]) {
+        --border-color: var(--ddd-theme-default-original87Pink);
+      }
+      :host([secondary="blue"]) {
+        --border-color: var(--ddd-theme-default-beaverBlue);
+      }
+      :host([secondary="black"]) {
+        --border-color: #000;
+      }
 
       :host {
         margin: 25px;
@@ -44,7 +66,7 @@ export class MediaImage extends DDD {
 
       .background:hover {
         transform: translate(8px,-8px);
-        box-shadow: -8px 8px #000;
+        box-shadow: -8px 8px var(--border-color);
         transition: .5s;
       }
 
@@ -70,7 +92,17 @@ export class MediaImage extends DDD {
     // console.log(document.querySelector("play-list"));
     // const event = new CustomEvent('toggle-play-list', {bubbles: true, composed: true});
     // document.body.dispatchEvent(event);
-    document.querySelector('play-list').togglePlaylist()
+      const evt = new CustomEvent("toggle-play-list", {
+        bubbles: true,
+        composed: true,
+        cancelable: true,
+        detail: {
+        opened: true,
+        invokedBy: this.invokedBy,
+      },
+    });
+    this.dispatchEvent(evt);
+    // document.querySelector('play-list').togglePlaylist()
   }
 
   addToModal() {
