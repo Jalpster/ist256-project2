@@ -43,6 +43,8 @@ export class PlayList extends DDD {
     return css`
 
       :host {
+        --width: 900px;
+        --height: 500px;
       }
 
       .background-overlay { 
@@ -88,7 +90,10 @@ export class PlayList extends DDD {
       }
 
       button {
-        height: 20px;
+        height: 40px;
+        width: 80px;
+        margin-right: 20px;
+        margin-left: 20px;
       }
 
       .progress-numbers {
@@ -130,7 +135,6 @@ export class PlayList extends DDD {
         <div class="background-overlay">
             <button class="close-button" @click="${this.closeOverlay}">X</button>
             <div class="content">
-                <button @click="${this.moveLeft}">Left</button>
                 <div class="image-box">
                   <span class="progress-numbers">
                     <p>${this.currentIndex + 1}</p>
@@ -139,8 +143,11 @@ export class PlayList extends DDD {
                   </span>
                   ${this.currentImage}
                   <p>${this.currentImage.description}</p>
+                  <span>
+                    <button @click="${this.moveLeft}">Left</button>
+                    <button @click="${this.moveRight}">Right</button>
+                  </span>
                 </div>
-                <button @click="${this.moveRight}">Right</button>
             </div>
         </div>    
     `;
